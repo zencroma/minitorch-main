@@ -14,6 +14,7 @@ from minitorch.operators import (
     inv_back,
     log_back,
     lt,
+    gt,
     max,
     mul,
     neg,
@@ -108,6 +109,12 @@ def test_sigmoid(a: float) -> None:
     * It is  strictly increasing.
     """
     # TODO: Implement for Task 0.2.
+    assert lt(a,1) == 1.0
+    assert gt(a,0) == 1.0
+    assert 1.0 - sigmoid(a) == neg(sigmoid(a))
+    assert sigmoid(0) == 0.5
+    assert sigmoid(a)  == 1 - sigmoid(neg(a))
+    assert sigmoid(1) > sigmoid(0)
     raise NotImplementedError('Need to implement for Task 0.2')
 
 
@@ -116,26 +123,34 @@ def test_sigmoid(a: float) -> None:
 def test_transitive(a: float, b: float, c: float) -> None:
     "Test the transitive property of less-than (a < b and b < c implies a < c)"
     # TODO: Implement for Task 0.2.
+    if a < b  and b < c:
+        assert a < c
     raise NotImplementedError('Need to implement for Task 0.2')
 
 
 @pytest.mark.task0_2
-def test_symmetric() -> None:
+@given(small_floats, small_floats)
+def test_symmetric(a: float, b: float) -> None:
     """
     Write a test that ensures that :func:`minitorch.operators.mul` is symmetric, i.e.
     gives the same value regardless of the order of its input.
     """
     # TODO: Implement for Task 0.2.
+    assert mul(a, b) == mul(b,a)
+    assert mul(b, a) == a*b
     raise NotImplementedError('Need to implement for Task 0.2')
 
 
 @pytest.mark.task0_2
-def test_distribute() -> None:
+@given(small_floats,small_floats,small_floats)
+def test_distribute(x: float, y: float, z: float) -> None:
     r"""
     Write a test that ensures that your operators distribute, i.e.
     :math:`z \times (x + y) = z \times x + z \times y`
     """
     # TODO: Implement for Task 0.2.
+    assert z * (x + y) == z*x + z*y
+    assert z*x + z*y == z * (x + y) 
     raise NotImplementedError('Need to implement for Task 0.2')
 
 
